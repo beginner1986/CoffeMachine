@@ -21,7 +21,7 @@ public class Machine {
         scanner = new Scanner(System.in);
     }
 
-    public void status() {
+    public void remaining() {
         System.out.println("The coffee machine has:");
         System.out.printf("%d ml of water\n", this.water);
         System.out.printf("%d ml of milk\n", this.milk);
@@ -31,17 +31,17 @@ public class Machine {
     }
 
     public void buy() {
-        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino: ");
-        int choice = scanner.nextInt();
+        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:");
+        String choice = scanner.next();
 
         switch(choice) {
-            case 1:
+            case "1":
                 makeEspresso();
                 break;
-            case 2:
+            case "2":
                 makeLatte();
                 break;
-            case 3:
+            case "3":
                 makeCappucino();
                 break;
             default:
@@ -69,23 +69,54 @@ public class Machine {
     }
 
     private void makeEspresso() {
-        this.water -= 250;
-        this.beans -= 16;
-        this.money += 4;
-        this.cups--;
+        if(this.water < 250) {
+            System.out.println("Sorry, not enough water!");
+        } else if(this.beans < 16) {
+            System.out.println("Sorry, not enough beans!");
+        } else if(this.cups < 1) {
+            System.out.println("Sorry, not enough cups!");
+        } else {
+            System.out.println("I have enough resources, making you a coffee!");
+            this.water -= 250;
+            this.beans -= 16;
+            this.money += 4;
+            this.cups--;
+        }
     }
     private void makeLatte() {
-        this.water -= 350;
-        this.milk -= 75;
-        this.beans -= 20;
-        this.money += 7;
-        this.cups--;
+        if(this.water < 350) {
+            System.out.println("Sorry, not enough water!");
+        } else if(this.milk < 75) {
+            System.out.println("Sorry, not enough milk!");
+        } else if(this.beans < 20) {
+            System.out.println("Sorry, not enough beans!");
+        } else if(this.cups < 1) {
+            System.out.println("Sorry, not enough cups!");
+        } else {
+            System.out.println("I have enough resources, making you a coffee!");
+            this.water -= 350;
+            this.milk -= 75;
+            this.beans -= 20;
+            this.money += 7;
+            this.cups--;
+        }
     }
     private void makeCappucino() {
-        this.water -= 200;
-        this.milk -= 100;
-        this.beans -= 12;
-        this.money += 6;
-        this.cups--;
+        if(this.water < 200) {
+            System.out.println("Sorry, not enough water!");
+        } else if(this.milk < 100) {
+            System.out.println("Sorry, not enough milk!");
+        } else if(this.beans < 12) {
+            System.out.println("Sorry, not enough beans!");
+        } else if(this.cups < 1) {
+            System.out.println("Sorry, not enough cups!");
+        } else {
+            System.out.println("I have enough resources, making you a coffee!");
+            this.water -= 200;
+            this.milk -= 100;
+            this.beans -= 12;
+            this.money += 6;
+            this.cups--;
+        }
     }
 }
