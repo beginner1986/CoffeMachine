@@ -4,20 +4,44 @@ import java.util.Scanner;
 
 public class CoffeeMachine {
     public static void main(String[] args) {
-        /*
-            System.out.println("Starting to make a coffee");
-            System.out.println("Grinding coffee beans");
-            System.out.println("Boiling water");
-            System.out.println("Mixing boiled water with crushed coffee beans");
-            System.out.println("Pouring coffee into the cup");
-            System.out.println("Pouring some milk into the cup");
-            System.out.println("Coffee is ready!");
-         */
         Scanner scanner = new Scanner(System.in);
+        int water;
+        int milk;
+        int beans;
+        int cups;
 
+        System.out.println("Write how many ml of water the coffee machine has: ");
+        water = scanner.nextInt();
+        System.out.println("Write how many ml of milk the coffee machine has: ");
+        milk = scanner.nextInt();
+        System.out.println("Write how many grams of coffee beans the coffee machine has: ");
+        beans = scanner.nextInt();
+        System.out.println("Write how many cups of coffee you will need: ");
+        cups = scanner.nextInt();
+
+        checkServingsNumber(water, milk, beans, cups);
+/*
         System.out.println("Write how many cups of coffee you will need: ");
         int amount = scanner.nextInt();
         calculateIngredients(amount);
+ */
+    }
+
+    private static void checkServingsNumber(int water, int milk, int beans, int cups) {
+        int waterNeeded = 200 * cups;
+        int milkNeeded = 50 * cups;
+        int beansNeeded = 15 * cups;
+
+        int amount = Math.min(Math.min(water / 200, milk / 50), beans / 15);
+
+        if(amount == cups) {
+            System.out.println("Yes, I can make that amount of coffee");
+        } else if(amount < cups){
+                System.out.printf("No, I can make only %d cup(s) of coffee", amount);
+        } else {
+            amount -= cups;
+            System.out.printf("Yes, I can make that amount of coffee (and even %d more than that)", amount);
+        }
     }
 
     private static void calculateIngredients(int amount) {
