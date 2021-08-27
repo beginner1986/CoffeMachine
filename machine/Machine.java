@@ -1,15 +1,14 @@
 package machine;
 
-import java.util.Scanner;
-
 public class Machine {
     private int water;
     private int milk;
     private int beans;
     private int money;
     private int cups;
+    private State state;
+    private FillStage fillStage;
 
-    private Scanner scanner;
 
     public Machine(int water, int milk, int beans, int money, int cups) {
         this.water = water;
@@ -17,11 +16,46 @@ public class Machine {
         this.beans = beans;
         this.money = money;
         this.cups = cups;
-
-        scanner = new Scanner(System.in);
+        this.state = State.MENU;
     }
 
-    public void remaining() {
+    public void input(String input) {
+        switch(state) {
+            case MENU:
+                handleMenu(input);
+                break;
+            case BUY:
+                buy(input);
+                break;
+            case FILL:
+                fill(Integer.valueOf(input));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void handleMenu(String input) {
+        switch(input) {
+            case "buy":
+                state = State.BUY;
+                break;
+            case "fill":
+                state = State.FILL;
+                fillStage = FillStage.WATER;
+                break;
+            case "take":
+                take();
+                break;
+            case "remaining":
+                remaining();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void remaining() {
         System.out.println("The coffee machine has:");
         System.out.printf("%d ml of water\n", this.water);
         System.out.printf("%d ml of milk\n", this.milk);
@@ -30,9 +64,8 @@ public class Machine {
         System.out.printf("$%d of money\n\n", this.money);
     }
 
-    public void buy() {
+    private void buy(String choice) {
         System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:");
-        String choice = scanner.next();
 
         switch(choice) {
             case "1":
@@ -47,23 +80,42 @@ public class Machine {
             default:
                 break;
         }
-    }
-    public void fill() {
-        System.out.println("Write how many ml of water you want to add: ");
-        int water = scanner.nextInt();
-        System.out.println("Write how many ml of milk you want to add: ");
-        int milk = scanner.nextInt();
-        System.out.println("Write how many grams of coffee beans you want to add: ");
-        int beans = scanner.nextInt();
-        System.out.println("Write how many disposable cups of coffee you want to add: ");
-        int cups = scanner.nextInt();
 
-        this.water += water;
-        this.milk += milk;
-        this.beans += beans;
-        this.cups += cups;
+        state = State.MENU;
     }
-    public void take() {
+    private void fill(int input) {
+        switch(fillStage) {
+            case WATER:
+                System.out.println("Write how many ml of water you want to add: ");
+                int water = input;
+                this.water += water;
+                fillStage = FillStage.MILK;
+                break;
+            case MILK:
+                System.out.println("Write how many ml of milk you want to add: ");
+                int milk = input;
+                this.milk += milk;
+                fillStage = FillStage.BEANS;
+                break;
+            case BEANS:
+                System.out.println("Write how many grams of coffee beans you want to add: ");
+                int beans = input;
+                this.beans += beans;
+                fillStage = FillStage.CUPS;
+                break;
+            case CUPS:
+                System.out.println("Write how many disposable cups of coffee you want to add: ");
+                int cups = input;
+                this.cups += cups;
+                fillStage = FillStage.WATER;
+                state = State.MENU;
+                break;
+            default:
+                break;
+        }
+
+    }
+    private void take() {
         System.out.printf("I gave you $%d", this.money);
         this.money = 0;
     }

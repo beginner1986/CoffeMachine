@@ -6,30 +6,18 @@ public class CoffeeMachine {
     public static void main(String[] args) {
         Machine machine = new Machine(400, 540, 120, 550,9);
         Scanner scanner = new Scanner(System.in);
-        boolean finished = false;
+        boolean running = true;
+        String action;
 
-        while(!finished) {
+        while(running) {
             System.out.println("Write action (buy, fill, take, remaining, exit): ");
-            String action = scanner.nextLine();
+            action = scanner.nextLine();
 
-            switch(action) {
-                case "buy":
-                    machine.buy();
-                    break;
-                case "fill":
-                    machine.fill();
-                    break;
-                case "take":
-                    machine.take();
-                    break;
-                case "remaining":
-                    machine.remaining();
-                    break;
-                case "exit":
-                    finished = true;
-                    break;
-                default:
-                    break;
+            if(action.equals("exit")) {
+                running = false;
+            } else
+            {
+                machine.input(action);
             }
         }
     }
